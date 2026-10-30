@@ -1,0 +1,9 @@
+# /etc/shorian/environment (systemd EnvironmentFile syntax, not a shell script).
+# Synthetic public demo only; real-patient readiness remains incomplete.
+NODE_ENV=production
+NEXT_TELEMETRY_DISABLED=1
+DEMO_MODE=true
+SESSION_SECURE=true
+DATABASE_PATH=.data/postgres
+PORT=3000
+BIND_HOST=127.0.0.1

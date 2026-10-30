@@ -1,0 +1,11 @@
+# Replace this example hostname with the real domain before installing.
+# The domain's A record must point at the VPS. Do not change MX/email records.
+clinic.example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:3000
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy same-origin
+        -Server
+    }
+}
