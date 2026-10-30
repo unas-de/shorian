@@ -1,0 +1,4 @@
+import {existsSync} from 'node:fs';
+if(existsSync('.env.local'))process.loadEnvFile('.env.local');
+import {seed,seedPlatform,db} from '../lib/db';
+await seed();await seedPlatform();if(process.argv.includes('--rotate-demo-passwords')){const {randomBytes}=await import('node:crypto');const {writeFileSync}=await import('node:fs');const {passwordHash}=await import('../lib/db');const password=randomBytes(24).toString('base64url');await(await db()).query("UPDATE profiles SET password_hash=$1 WHERE email LIKE '%@demo.shorian.local' AND NOT platform_admin",[passwordHash(password)]);writeFileSync('.data/demo-credentials.txt',`Synthetic demo only. Password: ${password}\nEmails: manager1, receptionist1, doctor1, accountant1 (or 2) @demo.shorian.local\n`,{mode:0o600});}console.log('Synthetic demo initialized. Local credentials: .data/demo-credentials.txt');await (await db()).close();

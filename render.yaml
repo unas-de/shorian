@@ -1,0 +1,31 @@
+# Public synthetic demo only. A paid web service and persistent disk are required.
+# Review current Render pricing before creating this blueprint. No resources have
+# been created by adding this file. One instance only: PGlite is single-process.
+services:
+  - type: web
+    name: shorian-demo
+    runtime: node
+    region: frankfurt
+    plan: standard
+    numInstances: 1
+    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run build
+    startCommand: node scripts/deploy-start.mjs
+    healthCheckPath: /api/health
+    autoDeployTrigger: off
+    disk:
+      name: shorian-private-data
+      mountPath: /opt/render/project/src/.data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: '1'
+      - key: DEMO_MODE
+        value: 'true'
+      - key: SESSION_SECURE
+        value: 'true'
+      - key: DATABASE_PATH
+        value: .data/postgres
